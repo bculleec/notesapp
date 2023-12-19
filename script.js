@@ -1,5 +1,6 @@
 const notes_container = document.querySelector(".notes-container");
 const createbtn = document.querySelector(".btn");
+const clocktime = document.querySelector(".time");
 let notes = document.querySelectorAll(".input-box");
 
 
@@ -8,6 +9,20 @@ function show_notes(){
 }
 
 show_notes();
+
+
+function update_time(){
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+
+    clockStr = hours.toString() + ":" + minutes.toString();
+
+    document.getElementById("timeh1").innerHTML = clockStr;
+}
+
+update_time();
+setInterval(update_time, 60000);
 
 function update_storage() {
     localStorage.setItem("notes", notes_container.innerHTML);
