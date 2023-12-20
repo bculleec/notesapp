@@ -9,14 +9,22 @@ function show_notes(){
 }
 
 show_notes();
-
+notes = document.querySelectorAll(".input-box");
+        notes.forEach(nt => {
+            nt.style.opacity = 1;
+        })
 
 function update_time(){
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
 
-    clockStr = hours.toString() + ":" + minutes.toString();
+    hoursStr = hours.toString();
+    minutesStr = minutes.toString();
+
+    if (hoursStr.length<2) hoursStr = "0"+hoursStr;
+    if (minutesStr.length<2) minutesStr = "0"+minutesStr;
+    clockStr = hoursStr + ":" + minutesStr;
 
     document.getElementById("timeh1").innerHTML = clockStr;
 }
@@ -34,21 +42,32 @@ createbtn.addEventListener("click", ()=>{
     img.src = "Untitled.png";
     inputBox.className = "input-box";
     inputBox.setAttribute("contenteditable", "true");
+    inputBox.style.opacity = 0;
     notes_container.appendChild(inputBox).appendChild(img);
+    inputBox.offsetWidth;
+    inputBox.style.opacity = 1;
 })
 
 notes_container.addEventListener("click", function(e){
     if (e.target.tagName === "IMG"){
-        e.target.parentElement.remove();
-        update_storage();
+        e.target.parentElement.style.opacity = 0;
+        setTimeout(function() {
+            e.target.parentElement.remove();
+            update_storage();
+          }, 500);
+        
+        
     }
     else if(e.target.tagName === "P")
     {
+        thisNote = e.target;
+        thisNote.style.height = '600px';
         notes = document.querySelectorAll(".input-box");
         notes.forEach(nt => {
             nt.onkeyup = function(){
                 update_storage();
             }
+            if (nt!=thisNote) nt.style.height = '150px';
         })
     }
 })
